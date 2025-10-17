@@ -1,49 +1,46 @@
-package ClientPackage; // Package for client class
-
-import java.net.*;      // For Socket
-import java.io.*;       // For Input/Output streams
-import java.util.Scanner; // For user input
-
+package ClientPackage; 
+import java.net.*;      
+import java.io.*;       
+import java.util.Scanner; 
 public class Client {
 
     public static void main(String[] args) throws Exception {
 
-        // 1. Connect to the server at localhost, port 7040
+        // connecter a la serveur de port 7040
         Socket socket = new Socket("localhost", 7040);
-        Scanner s = new Scanner(System.in); // Scanner for reading user input
+        Scanner s = new Scanner(System.in); 
 
-        // 2. Ask user for the first operand
+        // demande de lutilisateur de loperand 1 
         System.out.print("Premier opérande : ");
         double operand1 = s.nextDouble();
 
-        // 3. Ask user for the operator (+ - * /)
+        // demande de loperator 
         System.out.print("Opérateur (+ - * /) : ");
         String operator = s.next();
 
-        // 4. Ask user for the second operand
+        // demande de la seconde operand
         System.out.print("Deuxième opérande : ");
         double operand2 = s.nextDouble();
 
-        // 5. Create streams to send/receive data to/from server
-        PrintWriter pw = new PrintWriter(socket.getOutputStream(), true); // auto-flush
+        //pour receverez les data depuis server 
+        PrintWriter pw = new PrintWriter(socket.getOutputStream(), true); 
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-        // 6. Send the operation to the server
-        pw.println(operand1); // Send first number
-        pw.println(operator); // Send operator
-        pw.println(operand2); // Send second number
+        // envoyer loperation ala server
+        pw.println(operand1); 
+        pw.println(operator); 
+        pw.println(operand2); 
 
-        // 7. Receive result from server
+        // recevez la resultat
         String resultat = br.readLine(); 
         System.out.println("Résultat reçu : " + resultat); // Display result
 
-        // 8. Close all resources
-        br.close();       // Close input stream
-        pw.close();       // Close output stream
-        socket.close();   // Close socket
-        s.close();        // Close Scanner
+        // fermeture
+        br.close();      
+        pw.close();       
+        socket.close();   
+        s.close();        
 
-        // 9. End of client program
         System.out.println("Client terminé.");
     }
 }
