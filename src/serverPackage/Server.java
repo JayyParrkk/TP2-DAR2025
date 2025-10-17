@@ -13,49 +13,49 @@ public class Server {
         Socket socket = serverSocket.accept();
         System.out.println("Client connecté : " + socket.getInetAddress());
 
-        // 3. Create streams to read from and write to the client
+        // pour read et write depuis le client 
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter pw = new PrintWriter(socket.getOutputStream(), true); // auto-flush
+        PrintWriter pw = new PrintWriter(socket.getOutputStream(), true); // je utilise cette fonction parceque j'ai un erreur avec le bufferedwriter (a l'aide de chatgpt)
 
-        // 4. Read operation data sent by client
-        double operand1 = Double.parseDouble(br.readLine()); // Read first number
-        String operator = br.readLine();                     // Read operator (+ - * /)
-        double operand2 = Double.parseDouble(br.readLine()); // Read second number
+        // 4. read les operations de client 
+        double operand1 = Double.parseDouble(br.readLine()); 
+        String operator = br.readLine();                     
+        double operand2 = Double.parseDouble(br.readLine()); 
 
-        // 5. Compute result based on operator
-        double res = 0; // Initialize result
+        // calcul de resultats de calculatrice 
+        double res = 0; 
         switch (operator) {
-            case "+": res = operand1 + operand2; break;      // Addition
-            case "-": res = operand1 - operand2; break;      // Subtraction
-            case "*": res = operand1 * operand2; break;      // Multiplication
-            case "/":                                          // Division
+            case "+": res = operand1 + operand2; break;      
+            case "-": res = operand1 - operand2; break;      
+            case "*": res = operand1 * operand2; break;      
+            case "/":                                          
                 if (operand2 != 0) { 
-                    res = operand1 / operand2;               // Avoid division by zero
+                    res = operand1 / operand2;               // pour n'est pas divisé par 0 
                 } else {
-                    pw.println("Erreur : division par zéro"); // Send error to client
+                    pw.println("Erreur : division par zéro"); 
                     br.close();
                     pw.close();
                     socket.close();
                     serverSocket.close();
-                    return;                                   // Stop server after error
+                    return;                                   // Stopper le server apress l'erreur 
                 }
                 break;
-            default:                                         // Invalid operator
-                pw.println("Opérateur invalide");           // Send error to client
+            default:                                         // Invalid operatore
+                pw.println("Opérateur invalide");           
                 br.close();
                 pw.close();
                 socket.close();
                 serverSocket.close();
-                return;                                     // Stop server after error
+                return;                                     
         }
 
-        // 6. Send result back to the client
+        // envoyer le resultat pour client 
         pw.println(res);
 
-        // 7. Close all resources
-        br.close();           // Close input stream
-        pw.close();           // Close output stream
-        socket.close();       // Close client socket
-        serverSocket.close(); // Close server socket
+        // fermeture
+        br.close();         
+        pw.close();           
+        socket.close();       
+        serverSocket.close(); 
     }
 }
